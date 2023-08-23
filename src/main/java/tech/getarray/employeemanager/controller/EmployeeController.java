@@ -23,41 +23,27 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees(){
-        List<Employee> employees = employeeService.findAllEmployees();
-        return new ResponseEntity<>(employees, HttpStatus.OK);
-//        return ResponseEntity.ok(employeeService.findAllEmployees());
+        return ResponseEntity.ok(employeeService.findAllEmployees());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Employee>> getEmployeeById(@PathVariable("id") Long id){
-        Optional<Employee> employee = employeeService.findEmployeeById(id);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
-//        return ResponseEntity.ok(employeeService.findEmployeeById(id));
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.findEmployeeById(id));
     }
 
     @PostMapping
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
-        Employee newEmployee = employeeService.addEmployee(employee);
-        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
-//        return ResponseEntity.ok(employeeService.addEmployee(employee));
+        return ResponseEntity.ok(employeeService.addEmployee(employee));
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
-        Employee updateEmploye = employeeService.updateEmployee(employee);
-        return new ResponseEntity<>(updateEmploye, HttpStatus.OK);
-//        return ResponseEntity.ok(employeeService.updateEmployee(employee));
+        return ResponseEntity.ok(employeeService.updateEmployee(employee));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteEmployee(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
-
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id){
-//        return ResponseEntity.ok(employeeService.deleteEmployee(id);
-//    }
-    
 }
