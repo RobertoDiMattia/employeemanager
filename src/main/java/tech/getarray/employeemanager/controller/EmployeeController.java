@@ -1,6 +1,8 @@
 package tech.getarray.employeemanager.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,22 +15,23 @@ import java.util.Optional;
 @RestController
 @Data
 @RequestMapping("/employee")
+@AllArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
-
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees(){
-        return ResponseEntity.ok(employeeService.findAllEmployees());
+//        return ResponseEntity.ok(employeeService.findAllEmployees());
+        List<Employee> employees = employeeService.findAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id){
-        return ResponseEntity.ok(employeeService.findEmployeeById(id));
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id){
+//        return ResponseEntity.ok(employeeService.findEmployeeById(id));
+        Employee employee = employeeService.findEmployeeById(id);
+        return new ResponseEntity<>(employee,HttpStatus.OK);
     }
 
     @PostMapping
@@ -41,9 +44,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateEmployee(employee));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteEmployee(id);
-        return ResponseEntity.ok().build();
+//        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
